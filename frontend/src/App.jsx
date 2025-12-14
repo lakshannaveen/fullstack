@@ -8,7 +8,6 @@ import Register from './pages/Register';
 function AppContent() {
   const { loading } = useContext(AuthContext);
   const [currentPage, setCurrentPage] = useState('home');
-  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     // Simple routing based on URL

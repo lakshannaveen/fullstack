@@ -1,11 +1,14 @@
 import { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from '../hooks/useNavigate';
+import Modal from '../components/Modal';
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -20,7 +23,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch('http://localhost:5008/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -36,12 +39,20 @@ export default function Login() {
       // JWT token is now in httpOnly cookie (set by backend)
       // Pass token and user to context
       login(data.token, data.user);
-      navigate('/');
+      
+      // Show success modal
+      setModalMessage(`🎉 Welcome back, ${data.user.name}! You have successfully logged in.`);
+      setShowModal(true);
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
+    navigate('/');
   };
 
   return (
@@ -105,6 +116,13 @@ export default function Login() {
           </a>
         </p>
       </div>
-    </div>
+      {/* Success Modal */}
+      <Modal
+        isOpen={showModal}
+        title="Login Successful"
+        message={modalMessage}
+        onClose={handleModalClose}
+        confirmText="Go to Home"
+      />    </div>
   );
 }

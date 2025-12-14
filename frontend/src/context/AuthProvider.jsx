@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { AuthContext } from './AuthContext';
 
 export function AuthProvider({ children }) {
@@ -20,7 +20,7 @@ export function AuthProvider({ children }) {
   // Set JWT token in cookie (httpOnly would be better from backend)
   const setTokenInCookie = (token) => {
     const expirationDate = new Date();
-    expirationDate.setDate(expirationDate.getDate() + 7); // 7 days
+    expirationDate.setTime(expirationDate.getTime() + (60 * 60 * 1000)); // 60 minutes
     document.cookie = `authToken=${encodeURIComponent(token)}; expires=${expirationDate.toUTCString()}; path=/; SameSite=Strict`;
   };
 
@@ -30,22 +30,13 @@ export function AuthProvider({ children }) {
   };
 
   // Load user data on mount - batch state updates
-  useEffect(() => {
-    const token = getTokenFromCookie();
-    if (token) {
-      // Verify token by fetching user data
-      fetchUserData(token);
-    } else {
-      setLoading(false);
-    }
-  }, []);
-
-  const fetchUserData = async (token) => {
+  const fetchUserData = useCallback(async (token) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/me', {
+      const response = await fetch('http://localhost:5008/api/auth/me', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        credentials: 'include', // Include cookies
       });
 
       if (response.ok) {
@@ -61,7 +52,16 @@ export function AuthProvider({ children }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    const token = getTokenFromCookie();
+    if (token) {
+      fetchUserData(token);
+    } else {
+      setLoading(false);
+    }
+  }, [fetchUserData]);
 
   const login = (newToken, newUser) => {
     setUser(newUser);

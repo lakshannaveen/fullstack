@@ -1,10 +1,10 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
-// Generate JWT Token
+// Generate JWT Token with 60 minutes expiration
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET || 'your-secret-key', {
-    expiresIn: '7d',
+    expiresIn: '60m', // 60 minutes session
   });
 };
 
@@ -92,7 +92,7 @@ exports.login = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production', // HTTPS only in production
       sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      maxAge: 60 * 60 * 1000, // 60 minutes
     });
 
     res.status(200).json({
