@@ -45,17 +45,7 @@ function AppContent() {
     );
   }
 
-  // If not logged in, only show login/register
-  if (!user) {
-    return (
-      <>
-        {currentPage === 'login' && <Login />}
-        {currentPage === 'register' && <Register />}
-        {currentPage !== 'login' && currentPage !== 'register' && <Login />}
-      </>
-    );
-  }
-
+  // Show all pages - home is public, login/register for auth
   return (
     <>
       {currentPage === 'login' && <Login />}

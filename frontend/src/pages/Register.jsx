@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from '../hooks/useNavigate';
+import Modal from '../components/Modal';
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -11,6 +12,8 @@ export default function Register() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -40,7 +43,10 @@ export default function Register() {
 
       // JWT token is now in httpOnly cookie (set by backend)
       login(data.token, data.user);
-      navigate('/');
+      
+      // Show success modal
+      setModalMessage(`Welcome ${data.user.name}! Your account has been created successfully.`);
+      setShowModal(true);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -48,8 +54,21 @@ export default function Register() {
     }
   };
 
+  const handleModalClose = () => {
+    setShowModal(false);
+    navigate('/');
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-purple-900 via-gray-900 to-black">
+      <Modal 
+        isOpen={showModal}
+        title="🎉 Registration Successful!"
+        message={modalMessage}
+        onClose={handleModalClose}
+        confirmText="Go to Home"
+      />
+      
       <div className="w-full max-w-md p-8 bg-gray-800 rounded-lg shadow-2xl border border-purple-500">
         <h1 className="text-4xl font-bold text-white mb-2 text-center">🎬 Cinema</h1>
         <h2 className="text-2xl font-bold text-white mb-6 text-center">Register</h2>
