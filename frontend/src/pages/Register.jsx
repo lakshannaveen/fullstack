@@ -72,7 +72,7 @@ export default function Register() {
       />
       <div className="w-full max-w-md bg-surface-600 rounded-2xl shadow-2xl p-8 border border-surface-400/40">
         <div className="flex justify-center mb-6">
-          <Logo size={64} />
+          <Logo size={96} className="bg-transparent shadow-none border-0" />
         </div>
         <h2 className="text-2xl font-bold text-secondary-400 mb-6 text-center">Create Account</h2>
 

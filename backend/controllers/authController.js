@@ -12,12 +12,11 @@ const generateToken = (id) => {
 // @route   POST /api/auth/register
 exports.register = async (req, res) => {
   try {
-
-    const { firstName, lastName, email, password, phone } = req.body;
+    const { name, email, password, phone } = req.body;
 
     // Validation
-    if (!firstName || !lastName || !email || !password) {
-      return res.status(400).json({ message: 'Please provide first name, last name, email, and password' });
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'Please provide name, email, and password' });
     }
 
     // Check if user already exists
@@ -28,10 +27,9 @@ exports.register = async (req, res) => {
 
     // Create user
     const user = await User.create({
-      firstName,
-      lastName,
+      name,
       email,
-      passwordHash: password,
+      password,
       phone: phone || '',
     });
 
@@ -52,11 +50,9 @@ exports.register = async (req, res) => {
       token, // Also send token in response for immediate use
       user: {
         id: user._id,
-        name: `${user.firstName} ${user.lastName}`.trim(),
+        name: user.name,
         email: user.email,
         phone: user.phone,
-        firstName: user.firstName,
-        lastName: user.lastName,
       },
     });
   } catch (error) {
