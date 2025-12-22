@@ -72,8 +72,8 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: 'Please provide email and password' });
     }
 
-    // Find user and include password field
-    const user = await User.findOne({ email }).select('+password');
+    // Find user and include passwordHash field
+    const user = await User.findOne({ email }).select('+passwordHash');
     if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
