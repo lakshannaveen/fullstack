@@ -69,6 +69,7 @@ export default function Register() {
         message={modalMessage}
         onClose={handleModalClose}
         confirmText="Go to Home"
+        theme="success"
       />
       <div className="w-full max-w-md bg-surface-600 rounded-2xl shadow-2xl p-8 border border-surface-400/40">
         <div className="flex justify-center mb-6">

@@ -137,6 +137,8 @@ export default function Login() {
         message={modalMessage}
         onClose={handleModalClose}
         confirmText="Go to Home"
-      />    </div>
+        theme="success"
+      />
+    </div>
   );
 }
