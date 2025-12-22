@@ -58,10 +58,10 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background-900 px-4 py-8">
-      <div className="flex justify-center mb-8">
-        <Logo size={64} />
-      </div>
       <div className="w-full max-w-md bg-surface-600 rounded-2xl shadow-2xl p-8 border border-surface-400/40">
+        <div className="flex justify-center mb-6">
+          <Logo size={64} />
+        </div>
         <h2 className="text-2xl font-bold text-secondary-400 mb-6 text-center">Sign In</h2>
 
         {error && (
