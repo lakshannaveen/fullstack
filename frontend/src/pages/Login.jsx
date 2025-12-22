@@ -62,7 +62,7 @@ export default function Login() {
         <div className="flex justify-center mb-6">
           <Logo size={96} className="bg-transparent shadow-none border-0" />
         </div>
-        <h2 className="text-2xl font-bold text-secondary-400 mb-6 text-center">Sign In</h2>
+        <h2 className="text-2xl font-bold text-secondary-400 mb-6 text-center">Login</h2>
 
         {error && (
           <div className="mb-4 p-3 bg-semantic-error text-white rounded-lg text-sm border border-semantic-error/60 animate-pulse">
